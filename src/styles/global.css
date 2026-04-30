@@ -45,7 +45,7 @@
     font-family: 'Pretendard Variable', system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.04em;
-    line-height: 0.96;
+    line-height: 1.05;
   }
   .h-serif-it {
     font-family: 'Pretendard Variable', system-ui, sans-serif;
@@ -181,5 +181,5 @@ html[data-lang="en"] [lang="ko"] { display: none !important; }
 html:not([data-lang]) [lang="en"] { display: none !important; }
 
 /* tighter line-height for Korean display */
-html[data-lang="ko"] .h-display { line-height: 1.05; letter-spacing: -0.045em; }
-html[data-lang="en"] .h-display { line-height: 1.1; letter-spacing: -0.04em; }
+html[data-lang="ko"] .h-display { line-height: 1.15; letter-spacing: -0.045em; }
+html[data-lang="en"] .h-display { line-height: 1.2; letter-spacing: -0.04em; }
