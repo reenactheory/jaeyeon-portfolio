@@ -1,0 +1,172 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Marquee from '~/components/Marquee.astro';
+import ProjectCard from '~/components/ProjectCard.astro';
+import Doodle from '~/components/Doodle.astro';
+import { projects } from '~/data/projects';
+
+const featured = projects.slice(0, 6);
+---
+
+<Layout>
+  <!-- HERO -->
+  <section class="container-x pt-32 pb-12 md:pt-56 md:pb-32 md:min-h-[clamp(820px,calc(620px+14vw),1100px)] relative isolate overflow-hidden">
+    <h1 class="h-display text-[clamp(2.25rem,7.5vw,7.5rem)]">
+      <span class="!block mask-line">
+        <span><span
+            class="role-rotator inline-block align-bottom"
+            style="height:1.25em;line-height:1.25;overflow-y:hidden;overflow-x:clip;"
+          ><span class="role-track flex flex-col items-start will-change-transform">
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">Graphic</span>
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">Web</span>
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">App</span>
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">UX</span>
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">Content</span>
+              <span class="whitespace-nowrap h-serif-it pr-[0.15em]">Graphic</span>
+            </span></span><span style="display:inline-block;transform:translateY(-0.1em);">&nbsp;Designer.</span></span>
+      </span>
+      <span class="!block mask-line">
+        <span>
+          <span lang="ko">김재연<span class="font-light">입니다.</span></span>
+          <span lang="en">I'm <span class="h-serif-it">Jaeyeon Kim</span>.</span>
+        </span>
+      </span>
+    </h1>
+
+    <!-- Hand-drawn doodle: zoomed character below text on mobile, full-bleed background on desktop -->
+    <div
+      class="hero-doodle pointer-events-none select-none"
+      aria-hidden="true"
+    ></div>
+
+    <script is:inline>
+      (() => {
+        const rotators = document.querySelectorAll('.role-rotator');
+        if (!rotators.length) return;
+        const TOTAL = 5; // unique words; the 6th item duplicates the 1st for seamless loop
+        const STEP_MS = 2200;
+        const EASE_MS = 700;
+        const ease = 'cubic-bezier(0.7, 0, 0.2, 1)';
+
+        let sets = [];
+        let i = 0;
+
+        const measure = () => {
+          sets = [];
+          rotators.forEach((r) => {
+            const track = r.querySelector('.role-track');
+            const items = track.children;
+            const widths = Array.from(items).map((el) => el.getBoundingClientRect().width);
+            sets.push({ rotator: r, track, widths });
+            // snap rotator to current index width without animation
+            r.style.transition = 'none';
+            r.style.width = widths[i] + 'px';
+          });
+        };
+
+        const tick = () => {
+          i++;
+          sets.forEach(({ rotator, track, widths }) => {
+            rotator.style.transition = `width ${EASE_MS}ms ${ease}`;
+            rotator.style.width = widths[i] + 'px';
+            track.style.transition = `transform ${EASE_MS}ms ${ease}`;
+            track.style.transform = `translateY(-${i}lh)`;
+          });
+          if (i === TOTAL) {
+            window.setTimeout(() => {
+              i = 0;
+              sets.forEach(({ rotator, track, widths }) => {
+                rotator.style.transition = 'none';
+                rotator.style.width = widths[0] + 'px';
+                track.style.transition = 'none';
+                track.style.transform = 'translateY(0)';
+              });
+            }, EASE_MS + 30);
+          }
+        };
+
+        const start = () => {
+          measure();
+          window.setInterval(tick, STEP_MS);
+
+          // Re-measure on viewport resize so font-size changes (clamp) keep widths in sync
+          let resizeTimer = null;
+          window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(measure, 120);
+          });
+        };
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(start);
+        } else if (document.readyState === 'complete') {
+          start();
+        } else {
+          window.addEventListener('load', start);
+        }
+      })();
+    </script>
+
+  </section>
+
+  <!-- MARQUEE -->
+  <Marquee items={["Mobile App", "✺", "Web Product", "✺", "Design System", "✺", "Motion", "✺"]} />
+
+  <!-- SELECTED WORK -->
+  <section class="container-x pt-24 md:pt-40 pb-24 md:pb-32">
+    <div class="flex items-end justify-between mb-12 md:mb-20">
+      <div>
+        <p lang="ko" class="label text-mute mb-3">Selected Works</p>
+        <h2 class="h-display text-[clamp(2rem,5vw,4.5rem)]">
+          <span lang="ko"><span class="h-serif-it">최근</span> 작업들</span>
+          <span lang="en">A few <span class="h-serif-it">recent</span> things.</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="columns-1 md:columns-3 gap-x-6 md:gap-x-8">
+      {featured.map((p) => (
+        <div class="mb-16 md:mb-24 break-inside-avoid">
+          <ProjectCard project={p} />
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-20 text-center">
+      <a href="/work" class="label link-line">
+        <span lang="ko">전체 작업 보기 →</span>
+        <span lang="en">See all the work →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT BLURB -->
+  <section class="bg-ink text-paper py-24 md:py-40 relative overflow-hidden">
+    <div class="absolute right-8 top-12 opacity-30">
+      <Doodle which="spiral" class="text-paper w-24 h-24" />
+    </div>
+    <div class="container-x grid md:grid-cols-12 gap-10">
+      <p class="label text-paper/50 md:col-span-2">
+        <span lang="ko">(소개) — 한 줄로</span>
+        <span lang="en">(about) — In short</span>
+      </p>
+      <div class="md:col-span-9 md:col-start-4">
+        <p class="h-display text-[clamp(1.75rem,3.5vw,3.25rem)] leading-[1.2]">
+          <span lang="ko">
+            <span class="h-serif-it">일상</span> 과 접목하여
+            유익한 디자인을 하고 싶은 디자이너 <br>
+            <span class="h-serif-it">김재연</span> 입니다.
+          </span>
+          <span lang="en">
+            Weaving design into the <span class="h-serif-it">everyday</span> —
+            I'm <span class="h-serif-it">Jaeyeon Kim</span>, a designer.
+          </span>
+        </p>
+        <a href="/about" class="inline-block mt-12 label link-line">
+          <span lang="ko">더 자세한 소개 →</span>
+          <span lang="en">More about me →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

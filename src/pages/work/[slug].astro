@@ -1,0 +1,331 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { projects } from '~/data/projects';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+
+const { project } = Astro.props;
+const idx = projects.findIndex((p) => p.slug === project.slug);
+const next = projects[(idx + 1) % projects.length];
+const heroImages = project.hero
+  ? (Array.isArray(project.hero) ? project.hero : [project.hero])
+  : [];
+const cols = project.columns ?? 2;
+const gridCols = cols === 3 ? 'md:grid-cols-3' : cols === 1 ? 'grid-cols-1' : 'md:grid-cols-2';
+const heroCols = heroImages.length >= 3
+  ? 'md:grid-cols-3'
+  : heroImages.length === 2
+    ? 'md:grid-cols-2'
+    : 'grid-cols-1';
+const previewMode = project.previewMode === true;
+const brandSections = project.brandSections ?? [];
+const logoSection = project.logoSection;
+---
+
+<Layout title={`${project.title.ko} — Jenna Story`} description={project.summary.ko}>
+  <section class="container-x pt-40 md:pt-48 pb-12">
+    <div class="grid md:grid-cols-12 gap-6 items-end">
+      <p class="label text-mute md:col-span-2">{project.index} · {project.year}</p>
+      <div class="md:col-span-10">
+        {project.subtitle && (
+          <p class="text-mute mb-3 md:mb-4 text-base md:text-xl">
+            <span lang="ko">{project.subtitle.ko}</span>
+            <span lang="en">{project.subtitle.en}</span>
+          </p>
+        )}
+        <h1 class="h-display text-[clamp(1.75rem,5vw,4.5rem)]">
+          <span lang="ko">{project.title.ko}</span>
+          <span lang="en">{project.title.en}</span>
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  {heroImages.length > 0 && (
+  <section class="container-x">
+    <div class={`grid grid-cols-1 ${heroCols} gap-4 md:gap-6`}>
+      {heroImages.map((src, i) => (
+        previewMode ? (
+          <button
+            type="button"
+            class="preview-trigger card-img reveal block w-full overflow-hidden bg-paper relative group cursor-pointer p-0"
+            style="height: 60vh; max-height: 720px;"
+            data-fullsrc={src}
+            aria-label={`${project.title.ko} ${i + 1} — 전체 보기`}
+          >
+            <img src={src} alt={`${project.title.ko} ${i + 1}`} class="w-full h-auto block" />
+            <span class="absolute inset-0 flex items-end justify-center pb-6 bg-gradient-to-t from-ink/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="label text-paper bg-ink/80 rounded-full px-5 py-2">
+                <span lang="ko">전체 보기</span>
+                <span lang="en">View full</span>
+              </span>
+            </span>
+          </button>
+        ) : (
+          <div class="card-img reveal block w-full">
+            <img src={src} alt={`${project.title.ko} ${i + 1}`} class="w-full h-auto block" />
+          </div>
+        )
+      ))}
+    </div>
+  </section>
+  )}
+
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-4 space-y-10 reveal">
+      <div>
+        <p class="label text-mute mb-2"><span lang="ko">클라이언트</span><span lang="en">Client</span></p>
+        <p class="text-lg">
+          <span lang="ko">{project.client.ko}</span>
+          <span lang="en">{project.client.en}</span>
+        </p>
+      </div>
+      <div>
+        <p class="label text-mute mb-2"><span lang="ko">역할</span><span lang="en">Role</span></p>
+        <ul class="space-y-1">
+          {project.role.ko.map((r, i) => (
+            <li>
+              <span lang="ko">{r}</span>
+              <span lang="en">{project.role.en[i]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="label text-mute mb-2"><span lang="ko">결과물</span><span lang="en">Deliverables</span></p>
+        <ul class="space-y-1">
+          {project.deliverables.ko.map((d, i) => (
+            <li>
+              <span lang="ko">{d}</span>
+              <span lang="en">{project.deliverables.en[i]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {project.duration && (
+        <div>
+          <p class="label text-mute mb-2"><span lang="ko">작업기간</span><span lang="en">Duration</span></p>
+          <p class="text-lg">
+            <span lang="ko">{project.duration.ko}</span>
+            <span lang="en">{project.duration.en}</span>
+          </p>
+        </div>
+      )}
+      {project.tools && project.tools.length > 0 && (
+        <div>
+          <p class="label text-mute mb-2"><span lang="ko">사용한 툴</span><span lang="en">Tools</span></p>
+          <ul class="space-y-1">
+            {project.tools.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
+      )}
+      {project.link && (
+        <div>
+          <p class="label text-mute mb-2"><span lang="ko">웹페이지</span><span lang="en">Website</span></p>
+          <a href={project.link} target="_blank" rel="noopener noreferrer" class="text-lg link-line break-all">
+            {project.link.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗
+          </a>
+        </div>
+      )}
+      <div>
+        <p class="label text-mute mb-2"><span lang="ko">연도</span><span lang="en">Year</span></p>
+        <p>{project.year}</p>
+      </div>
+    </div>
+    <div class="md:col-span-7 md:col-start-6 reveal">
+      <p class="text-lg md:text-xl leading-[1.75] tracking-normal text-ink/85">
+        <span lang="ko">{project.summary.ko}</span>
+        <span lang="en">{project.summary.en}</span>
+      </p>
+    </div>
+  </section>
+
+  {project.gallery.length > 0 && (
+  <section class="container-x py-8 md:py-12">
+    <div class={`grid grid-cols-1 ${gridCols} gap-6 md:gap-10`}>
+      {project.gallery.map((item, i) => {
+        const src = typeof item === 'string' ? item : item.src;
+        const full = typeof item === 'object' && item.full;
+        const spanClass = full ? (cols === 3 ? 'md:col-span-3' : cols === 2 ? 'md:col-span-2' : '') : '';
+        const wrapClass = cols === 1 ? 'mx-auto w-full max-w-[900px]' : '';
+        return previewMode ? (
+          <button
+            type="button"
+            class={`preview-trigger card-img reveal block w-full overflow-hidden bg-paper relative group cursor-pointer p-0 ${spanClass}`}
+            style="height: 60vh; max-height: 720px;"
+            data-fullsrc={src}
+            aria-label={`${project.title.ko} ${i + 1} — 전체 보기`}
+          >
+            <img src={src} alt={`${project.title.ko} ${i + 1}`} loading="lazy" class="w-full h-auto block" />
+            <span class="absolute inset-0 flex items-end justify-center pb-6 bg-gradient-to-t from-ink/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="label text-paper bg-ink/80 rounded-full px-5 py-2">
+                <span lang="ko">전체 보기</span>
+                <span lang="en">View full</span>
+              </span>
+            </span>
+          </button>
+        ) : (
+          <div class={`card-img reveal block ${spanClass} ${wrapClass}`}>
+            <img src={src} alt={`${project.title.ko} ${i + 1}`} loading="lazy" class="w-full h-auto block" />
+          </div>
+        );
+      })}
+    </div>
+  </section>
+  )}
+
+  {brandSections.length > 0 && (
+    <div class="container-x py-8 md:py-12 space-y-20 md:space-y-32">
+      {brandSections.map((section) => {
+        const sectionCols = section.columns ?? cols;
+        const sectionGridCols = sectionCols === 1
+          ? 'grid-cols-1'
+          : sectionCols === 2
+            ? 'grid-cols-1 md:grid-cols-2'
+            : sectionCols === 3
+              ? 'grid-cols-2 md:grid-cols-3'
+              : 'grid-cols-2 md:grid-cols-4';
+        return (
+          <section class="reveal">
+            <h2 class="h-display text-[clamp(1.5rem,3vw,2.5rem)] mb-6 md:mb-10">
+              <span lang="ko">{section.name.ko}</span>
+              <span lang="en">{section.name.en}</span>
+            </h2>
+            {sectionCols === 1 ? (
+              <div class={section.tight ? 'space-y-0' : 'space-y-6 md:space-y-10'}>
+                {section.items.map((item, i) => {
+                  const src = typeof item === 'string' ? item : item.src;
+                  const maxW = section.tight ? 'max-w-[560px]' : 'max-w-[900px]';
+                  return (
+                    <div class={`mx-auto w-full ${maxW}`}>
+                      <img src={src} alt={`${section.name.ko} ${i + 1}`} loading="lazy" class="w-full h-auto block" />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div class={`grid ${sectionGridCols} gap-3 md:gap-5`}>
+                {section.items.map((item, i) => {
+                  const src = typeof item === 'string' ? item : item.src;
+                  return (
+                    <div class="bg-paper">
+                      <img src={src} alt={`${section.name.ko} ${i + 1}`} loading="lazy" class="w-full h-auto block" />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  )}
+
+  {logoSection && (
+    <section class="container-x py-16 md:py-24">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center reveal">
+        <div class="bg-paper">
+          <img
+            src={logoSection.src}
+            alt={logoSection.label.ko}
+            loading="lazy"
+            class="w-full h-auto block"
+          />
+        </div>
+        <div>
+          <p class="label text-mute mb-3">
+            <span lang="ko">로고 디자인</span><span lang="en">Logo Design</span>
+          </p>
+          <h2 class="h-display text-[clamp(1.5rem,3vw,2.5rem)] mb-4 md:mb-6">
+            <span lang="ko">{logoSection.label.ko}</span>
+            <span lang="en">{logoSection.label.en}</span>
+          </h2>
+          {logoSection.description && (
+            <p class="text-base md:text-lg leading-relaxed text-ink/80">
+              <span lang="ko">{logoSection.description.ko}</span>
+              <span lang="en">{logoSection.description.en}</span>
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="container-x py-24 md:py-40 border-t border-line mt-20">
+    <p class="label text-mute mb-6">
+      <span lang="ko">다음 프로젝트</span><span lang="en">Next project</span>
+    </p>
+    <a href={`/work/${next.slug}`} class="group block">
+      <h2 class="h-display text-[clamp(1.75rem,5vw,4.5rem)] tracking-tighter2 transition-all duration-700 ease-smooth group-hover:translate-x-3">
+        <span lang="ko">{next.title.ko}</span>
+        <span lang="en">{next.title.en}</span>
+        <span class="opacity-30 group-hover:opacity-100 transition">→</span>
+      </h2>
+      <p class="mt-4 label text-mute">{next.client.ko} · {next.year}</p>
+    </a>
+  </section>
+
+  {previewMode && (
+    <div
+      id="preview-modal"
+      class="fixed inset-0 z-[100] hidden bg-ink/85 backdrop-blur-sm overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        type="button"
+        id="preview-close"
+        class="fixed top-4 right-4 md:top-6 md:right-6 z-[110] w-12 h-12 rounded-full bg-paper text-ink flex items-center justify-center text-2xl shadow-lg hover:scale-105 transition"
+        aria-label="닫기"
+      >
+        ×
+      </button>
+      <div class="min-h-full flex items-start justify-center py-8 md:py-12 px-4">
+        <div class="bg-paper rounded-md max-w-[460px] w-full">
+          <img id="preview-img" src="" alt="" class="w-full h-auto block rounded-md" />
+        </div>
+      </div>
+    </div>
+  )}
+</Layout>
+
+{previewMode && (
+  <script is:inline>
+    (() => {
+      const modal = document.getElementById('preview-modal');
+      const modalImg = document.getElementById('preview-img');
+      const closeBtn = document.getElementById('preview-close');
+      const triggers = document.querySelectorAll('.preview-trigger');
+      if (!modal || !modalImg || !closeBtn || !triggers.length) return;
+
+      const open = (src) => {
+        modalImg.src = src;
+        modal.classList.remove('hidden');
+        document.documentElement.style.overflow = 'hidden';
+        modal.scrollTop = 0;
+      };
+      const close = () => {
+        modal.classList.add('hidden');
+        document.documentElement.style.overflow = '';
+        modalImg.src = '';
+      };
+
+      triggers.forEach((el) => {
+        el.addEventListener('click', () => {
+          const src = el.getAttribute('data-fullsrc');
+          if (src) open(src);
+        });
+      });
+      closeBtn.addEventListener('click', close);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      });
+    })();
+  </script>
+)}
+

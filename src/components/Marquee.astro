@@ -1,0 +1,22 @@
+---
+interface Props {
+  items: string[];
+  italics?: boolean[];
+  class?: string;
+}
+const { items, italics = [], class: className = '' } = Astro.props;
+const repeated = [...items, ...items, ...items, ...items];
+---
+
+<div class={`overflow-hidden border-y border-line ${className}`}>
+  <div class="marquee-track py-4 md:py-5 select-none">
+    {repeated.map((item, i) => {
+      const isItalic = italics[i % items.length];
+      return (
+        <span class={`h-display text-[clamp(1.25rem,3.5vw,3rem)] leading-none px-5 md:px-8 whitespace-nowrap ${isItalic ? 'h-serif-it text-mute' : ''}`}>
+          {item}
+        </span>
+      );
+    })}
+  </div>
+</div>

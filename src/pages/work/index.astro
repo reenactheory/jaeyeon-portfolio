@@ -1,0 +1,72 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import ProjectCard from '~/components/ProjectCard.astro';
+import { projects } from '~/data/projects';
+
+const allCategoriesEn = Array.from(
+  new Set(projects.flatMap((p) => p.categories.en))
+).sort();
+
+const koByEn = new Map<string, string>();
+projects.forEach((p) => {
+  p.categories.en.forEach((en, i) => {
+    koByEn.set(en, p.categories.ko[i]);
+  });
+});
+---
+
+<Layout title="작업 — Jenna Story">
+  <section class="container-x pt-40 md:pt-56 pb-12">
+    <p lang="ko" class="label text-mute mb-3">Selected Works</p>
+    <h1 class="h-display text-[clamp(2rem,5vw,4.5rem)]">
+      <span lang="ko"><span class="h-serif-it">최근</span> 작업들</span>
+      <span lang="en">A few <span class="h-serif-it">recent</span> things.</span>
+    </h1>
+  </section>
+
+  <section class="container-x py-10 border-y border-line sticky top-16 md:top-20 bg-paper z-30">
+    <div class="flex items-center gap-3 md:gap-6 overflow-x-auto whitespace-nowrap">
+      <button data-filter="all" class="filter-btn label opacity-100">
+        <span lang="ko">전체 ({projects.length})</span>
+        <span lang="en">All ({projects.length})</span>
+      </button>
+      {allCategoriesEn.map((c) => {
+        const count = projects.filter((p) => p.categories.en.includes(c)).length;
+        const ko = koByEn.get(c) || c;
+        return (
+          <button data-filter={c} class="filter-btn label opacity-50 hover:opacity-100 transition">
+            <span lang="ko">{ko} ({count})</span>
+            <span lang="en">{c} ({count})</span>
+          </button>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="container-x py-16 md:py-24">
+    <div class="columns-1 md:columns-3 gap-x-6 md:gap-x-8">
+      {projects.map((p) => (
+        <div class="project-card mb-16 md:mb-24 break-inside-avoid" data-categories={p.categories.en.join(',')}>
+          <ProjectCard project={p} />
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter || 'all';
+      buttons.forEach((b) => b.classList.replace('opacity-100', 'opacity-50'));
+      btn.classList.replace('opacity-50', 'opacity-100');
+      cards.forEach((card) => {
+        const cats = (card.dataset.categories || '').split(',');
+        const match = f === 'all' || cats.includes(f);
+        card.style.display = match ? '' : 'none';
+      });
+    });
+  });
+</script>

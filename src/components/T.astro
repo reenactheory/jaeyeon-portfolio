@@ -1,0 +1,12 @@
+---
+interface Props {
+  ko?: string;
+  en?: string;
+  inline?: boolean;
+}
+const { ko, en, inline = true } = Astro.props;
+const Tag = inline ? 'span' : 'div';
+---
+
+{ko !== undefined ? <Tag lang="ko">{ko}</Tag> : <Tag lang="ko"><slot name="ko" /></Tag>}
+{en !== undefined ? <Tag lang="en">{en}</Tag> : <Tag lang="en"><slot name="en" /></Tag>}

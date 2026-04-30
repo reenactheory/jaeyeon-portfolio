@@ -1,0 +1,37 @@
+---
+import type { Project } from '~/data/projects';
+interface Props {
+  project: Project;
+  size?: 'tall' | 'wide' | 'square';
+}
+const { project } = Astro.props;
+---
+
+<a href={`/work/${project.slug}`} class="group block reveal">
+  <div class="overflow-hidden bg-paper">
+    <img
+      src={project.cover}
+      alt={project.title.ko}
+      loading="lazy"
+      class="w-full h-auto block transition-transform duration-[1200ms] ease-smooth group-hover:scale-[1.025]"
+    />
+  </div>
+
+  <div class="mt-5 md:mt-6 pb-3 border-b border-line transition-colors duration-500 group-hover:border-ink/50">
+    <h3 class="tracking-tighter2 flex items-baseline gap-2.5 text-base md:text-lg">
+      <span class="h-serif-it text-mute text-sm font-light shrink-0">{project.index}</span>
+      <span class="transition-transform duration-700 ease-smooth group-hover:translate-x-0.5">
+        <span lang="ko">{project.title.ko}</span>
+        <span lang="en">{project.title.en}</span>
+      </span>
+    </h3>
+  </div>
+
+  <p class="label text-mute mt-3 flex items-center justify-between gap-3">
+    <span>
+      <span lang="ko">{project.categories.ko.join(', ')}</span>
+      <span lang="en">{project.categories.en.join(', ')}</span>
+    </span>
+    <span class="text-ink/30 group-hover:text-ink/70 transition-colors duration-500">{project.year}</span>
+  </p>
+</a>

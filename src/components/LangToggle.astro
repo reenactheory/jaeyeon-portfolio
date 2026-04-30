@@ -1,0 +1,38 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`lang-toggle inline-flex items-center gap-1 label ${className}`}>
+  <button data-set-lang="ko" class="lang-btn px-1 transition-opacity">KO</button>
+  <span class="opacity-40">·</span>
+  <button data-set-lang="en" class="lang-btn px-1 transition-opacity">EN</button>
+</div>
+
+<script is:inline>
+  (function () {
+    function applyLang(lang) {
+      const html = document.documentElement;
+      html.setAttribute('lang', lang);
+      html.dataset.lang = lang;
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      document.querySelectorAll('.lang-btn').forEach((b) => {
+        const active = b.getAttribute('data-set-lang') === lang;
+        b.classList.toggle('opacity-100', active);
+        b.classList.toggle('opacity-40', !active);
+      });
+    }
+    let saved = 'ko';
+    try { saved = localStorage.getItem('lang') || 'ko'; } catch (e) {}
+    applyLang(saved);
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.closest && t.closest('[data-set-lang]')) {
+        const lang = t.closest('[data-set-lang]').getAttribute('data-set-lang');
+        applyLang(lang);
+      }
+    });
+  })();
+</script>

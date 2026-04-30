@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# image backups (kept locally, not for repo)
+public/projects.backup/

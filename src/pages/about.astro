@@ -1,0 +1,253 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Doodle from '~/components/Doodle.astro';
+
+const info = [
+  { ko: '생년월일', en: 'Born',  v: '2004.03.18' },
+  { ko: '연락처',   en: 'Phone', v: '+82 10 2782 2665' },
+  { ko: '이메일',   en: 'Email', v: 'jenna.jaeyeon@gmail.com' },
+];
+
+const education = [
+  {
+    school: 'Fashion Institute of Technology',
+    items: [
+      { ko: 'Communication Design 재학', en: 'Communication Design (in progress)', y: '2025' },
+      { ko: 'Fashion Business Management 준학사 졸업', en: "Fashion Business Management, Associate's", y: '2025' },
+    ],
+  },
+  {
+    school: { ko: '한국디지털미디어고등학교 디지털콘텐츠학과 졸업', en: 'Korea Digital Media High School — Digital Contents, graduated' },
+    y: '2023',
+  },
+  {
+    school: { ko: 'KAIST IP-CEO 교육과정 수료', en: 'KAIST IP-CEO Program, completed' },
+    y: '2021',
+  },
+];
+
+const activities = [
+  { ko: '대학교 잡지 동아리 IVY 레이아웃 디자이너', en: 'University magazine club IVY — Layout Designer', y: '2023 ~ 2025' },
+  { ko: '한국디지털미디어고등학교 봉사기구 디넌',   en: 'Korea Digital Media HS — Volunteer org. Dienen', y: '2022 ~ 2023' },
+  { ko: '한국디지털미디어고등학교 학생회 홍보부 부장', en: 'Korea Digital Media HS — Student Council, Head of PR', y: '2021' },
+];
+
+const experience = [
+  { ko: '프리랜서 디자이너',                           en: 'Freelance Designer',                                              y: '2020 ~' },
+  { ko: '(주)트렌드메이커 디자이너 인턴',              en: 'Trendmaker Inc. — Design Intern',                                 y: '2025' },
+  { ko: '만지 스튜디오 패션쇼 백스테이지 헬퍼',         en: 'Manji Studio Fashion Show — Backstage Helper',                    y: '2024' },
+  { ko: '메종니카 패션쇼 사무 보조 및 백스테이지 헬퍼', en: 'Maison Nika Fashion Show — Office Assistant & Backstage Helper',  y: '2024' },
+  { ko: '비건타이거 패션쇼 백스테이지 헬퍼',           en: 'Vegan Tiger Fashion Show — Backstage Helper',                      y: '2023' },
+];
+
+const tools = [
+  { name: 'Photoshop',   short: 'Ps', bg: '#001E36', fg: '#31A8FF' },
+  { name: 'Lightroom',   short: 'Lr', bg: '#001E36', fg: '#31A8FF' },
+  { name: 'Illustrator', short: 'Ai', bg: '#330000', fg: '#FF9A00' },
+  { name: 'Premiere',    short: 'Pr', bg: '#00005B', fg: '#9999FF' },
+  { name: 'InDesign',    short: 'Id', bg: '#49021F', fg: '#FF3366' },
+  { name: 'Figma',       short: 'Fg', bg: '#03011C', fg: '#FFFFFF' },
+];
+
+const tags = [
+  { ko: '끊임없는 도전',     en: 'Relentless challenge' },
+  { ko: '경청하는',         en: 'A good listener' },
+  { ko: '배우려는 자세',     en: 'Eager to learn' },
+  { ko: '긍정적인 마인드',   en: 'Positive mindset' },
+  { ko: '실수로부터 배우는', en: 'Learning from mistakes' },
+];
+---
+
+<Layout title="소개 — Jenna Story">
+  <!-- HERO -->
+  <section class="container-x pt-40 md:pt-56 pb-[53px] md:pb-[75px] relative">
+    <p class="label text-mute mb-6 mask-line text-[14px] md:text-[32px]">
+      <span>
+        <span lang="ko">안녕하세요,</span>
+        <span lang="en">Hello,</span>
+      </span>
+    </p>
+    <h1 class="h-display text-[clamp(1.75rem,5vw,4.5rem)]">
+      <span lang="ko" class="block">
+        <span class="block mask-line"><span>많은 것을 <span class="h-serif-it pr-[0.15em]">보고 배우며</span></span></span>
+        <span class="block mask-line"><span>유익한 디자인을 하고싶은</span></span>
+        <span class="block mask-line"><span>디자이너 <span class="h-serif-it">김재연</span> 입니다.</span></span>
+      </span>
+      <span lang="en" class="block">
+        <span class="block mask-line"><span>A designer who keeps</span></span>
+        <span class="block mask-line"><span><span class="h-serif-it">seeing, learning,</span></span></span>
+        <span class="block mask-line"><span>making design that matters.</span></span>
+      </span>
+    </h1>
+
+    <div class="absolute right-10 top-44 hidden md:block reveal">
+      <Doodle which="asterisk" class="text-ink/70 w-16 h-16" />
+    </div>
+  </section>
+
+  <!-- KEYWORD TAGS -->
+  <section class="container-x pb-20 md:pb-32">
+    <ul class="flex flex-wrap gap-2 md:gap-3 reveal">
+      {tags.map((t) => (
+        <li class="border border-line rounded-full px-4 py-2 md:px-5 md:py-2.5 text-sm md:text-base text-ink/80 hover:bg-ink hover:text-paper transition-colors duration-500">
+          <span lang="ko">#{t.ko}</span>
+          <span lang="en">#{t.en}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- BASIC INFO -->
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10 border-t border-line">
+    <div class="md:col-span-2">
+      <p class="label text-ink text-[14px] md:text-[28px]">Profile</p>
+      <p lang="ko" class="label text-mute md:text-[24px] mt-1 md:mt-2">프로필</p>
+    </div>
+    <div class="md:col-span-9 md:col-start-4 reveal">
+      <h2 class="h-display text-4xl md:text-6xl mb-10">
+        <span lang="ko">김재연 <span class="h-serif-it text-mute">— Jaeyeon Kim</span></span>
+        <span lang="en">Jaeyeon Kim <span class="h-serif-it text-mute">— 김재연</span></span>
+      </h2>
+      <dl class="divide-y divide-line/60 border-y border-line/60">
+        {info.map((row) => (
+          <div class="flex gap-6 py-4 md:py-5">
+            <dt class="label text-mute w-28 md:w-40 shrink-0 pt-1">
+              <span lang="ko">{row.ko}</span>
+              <span lang="en">{row.en}</span>
+            </dt>
+            <dd class="text-lg md:text-xl tracking-[-0.01em]">{row.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10 border-t border-line">
+    <div class="md:col-span-2">
+      <p class="label text-ink text-[14px] md:text-[28px]">Education</p>
+      <p lang="ko" class="label text-mute md:text-[24px] mt-1 md:mt-2">학력</p>
+    </div>
+    <div class="md:col-span-9 md:col-start-4 reveal">
+      <ul class="divide-y divide-line/60 border-y border-line/60">
+        {education.map((e) => (
+          <li class="py-6 md:py-8">
+            {typeof e.school === 'string' ? (
+              <>
+                <h3 class="h-display text-2xl md:text-3xl mb-4">{e.school}</h3>
+                <ul class="space-y-2">
+                  {e.items.map((it) => (
+                    <li class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-base md:text-lg text-ink/80">
+                      <span class="flex-1 min-w-0">
+                        <span lang="ko">{it.ko}</span>
+                        <span lang="en">{it.en}</span>
+                      </span>
+                      <span class="label text-mute">{it.y}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <h3 class="h-display text-2xl md:text-3xl flex-1 min-w-0">
+                  <span lang="ko">{e.school.ko}</span>
+                  <span lang="en">{e.school.en}</span>
+                </h3>
+                <span class="label text-mute">{e.y}</span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ACTIVITIES -->
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10 border-t border-line">
+    <div class="md:col-span-2">
+      <p class="label text-ink text-[14px] md:text-[28px]">Activities</p>
+      <p lang="ko" class="label text-mute md:text-[24px] mt-1 md:mt-2">활동</p>
+    </div>
+    <div class="md:col-span-9 md:col-start-4 reveal">
+      <ul class="divide-y divide-line/60 border-y border-line/60">
+        {activities.map((a) => (
+          <li class="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-5 md:py-6">
+            <span class="flex-1 min-w-0 text-lg md:text-xl tracking-[-0.01em]">
+              <span lang="ko">{a.ko}</span>
+              <span lang="en">{a.en}</span>
+            </span>
+            <span class="label text-mute">{a.y}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10 border-t border-line">
+    <div class="md:col-span-2">
+      <p class="label text-ink text-[14px] md:text-[28px]">Experience</p>
+      <p lang="ko" class="label text-mute md:text-[24px] mt-1 md:mt-2">경력</p>
+    </div>
+    <div class="md:col-span-9 md:col-start-4 reveal">
+      <ul class="divide-y divide-line/60 border-y border-line/60">
+        {experience.map((x) => (
+          <li class="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-5 md:py-6">
+            <span class="flex-1 min-w-0 text-lg md:text-xl tracking-[-0.01em]">
+              <span lang="ko">{x.ko}</span>
+              <span lang="en">{x.en}</span>
+            </span>
+            <span class="label text-mute">{x.y}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="container-x py-20 md:py-32 grid md:grid-cols-12 gap-10 border-t border-line">
+    <div class="md:col-span-2">
+      <p class="label text-ink text-[14px] md:text-[28px]">Tools</p>
+      <p lang="ko" class="label text-mute md:text-[24px] mt-1 md:mt-2">도구</p>
+    </div>
+    <div class="md:col-span-9 md:col-start-4 reveal">
+      <ul class="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-5 md:max-w-[880px]">
+        {tools.map((t) => (
+          <li
+            style={`--tool-bg: ${t.bg}; --tool-fg: ${t.fg};`}
+            class="tool-tile aspect-square border border-line rounded-2xl flex flex-col items-center justify-center gap-2"
+          >
+            <span class="tool-short h-display text-3xl md:text-4xl">{t.short}</span>
+            <span class="tool-name label normal-case">{t.name}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Tool tiles — per-brand hover colors */
+  .tool-tile {
+    transition: background-color 500ms ease, color 500ms ease, border-color 500ms ease;
+  }
+  .tool-tile:hover {
+    background-color: var(--tool-bg);
+    color: var(--tool-fg);
+    border-color: var(--tool-bg);
+  }
+  /* Allow descenders (e.g. 'g' in Fg) to render fully when text-clip gradient is applied */
+  .tool-short {
+    display: inline-block;
+    line-height: 1.3;
+  }
+  .tool-tile .tool-name {
+    color: var(--mute);
+    transition: color 500ms ease, opacity 500ms ease;
+  }
+  .tool-tile:hover .tool-name {
+    color: var(--tool-fg);
+    opacity: 0.75;
+  }
+
+</style>
