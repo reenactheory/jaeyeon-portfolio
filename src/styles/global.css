@@ -26,6 +26,12 @@
     overflow-x: hidden;
   }
 
+  /* Korean-aware word break: never split mid-word, but allow breaks at natural boundaries */
+  h1, h2, h3, h4, h5, h6, p, a, li, span, dt, dd {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
   ::selection {
     background: var(--ink);
     color: var(--paper);
@@ -129,15 +135,17 @@
   transform: translateY(0);
 }
 
-/* Mask reveal for headlines */
+/* Mask reveal for headlines — extra padding so descenders/ascenders never clip */
 .mask-line {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
+  padding: 0.15em 0.05em 0.2em;
+  margin: -0.15em -0.05em -0.2em;
 }
 .mask-line > span {
   display: inline-block;
-  transform: translateY(105%);
+  transform: translateY(120%);
   transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .is-visible .mask-line > span,
